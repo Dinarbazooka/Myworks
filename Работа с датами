@@ -1,0 +1,152 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace Work_With_Dates
+{
+    class Program
+    {
+
+
+        static void Main(string[] args)
+        {
+            DateTime dt = DateTime.Parse("03.03.2016");
+            dt = new DateTime(2016, 03, 31);
+            Console.WriteLine(DateTime.DaysInMonth(2016, 2));          //число дней в месяце
+            Console.WriteLine(dt.CompareTo(DateTime.Today));           // функция сравнения
+            Console.WriteLine(dt.Year);                                //только год
+            Console.WriteLine(dt.ToShortDateString());                 //печать даты без времени
+            Console.WriteLine(RandomDate().ToShortDateString());       //функция случайно сгенерированной даты
+            Console.WriteLine("Случайно сгенерированные даты: ");
+            RandomDATEFILE("FileDate.txt");                            //функция записывает файл со случайной датой
+            ReadFile("FileDate.txt");                                  //функция чтения файла и вывод на консоль
+            //ReadSummerDate("FileDate.txt");                            //функция чтения файла и вывод на консоль Летние даты
+            //Weekend("FileDate.txt");                                   //функция выводит только выходные даты
+            Regulerize("FileDate.txt");                                //функция проверяет упорядочены ли даты в файле
+            Console.WriteLine("По старому стилю: ");
+            OldStyle("FileDate.txt"); //правильно, но добавляет лишнее // функция добавляет к датам 13 дней(делает по старому стилю)
+            ReadFile("FileDate.txt");                                  //функция чтения файла и вывод на консоль
+            Console.ReadKey();
+
+
+        }
+        static DateTime RandomDate()
+        {
+            int a = rnd.Next(1, 13);
+            int b = rnd.Next(1, 10000);
+            int c = rnd.Next(1, DateTime.DaysInMonth(b, a) + 1);
+            DateTime dat = new DateTime(b, a, c);
+            return dat;
+        }
+        static void ReadFile(string filename)
+        {
+            try
+            {
+                StreamReader sr = new StreamReader(filename);        
+                while (!sr.EndOfStream)
+                    Console.WriteLine(sr.ReadLine());
+                sr.Close();
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Несуществующий файл");
+            }
+        }
+        static Random rnd = new Random();
+        static void RandomDATEFILE(string filename)
+        {
+            StreamWriter sw = new StreamWriter(filename);
+            int n = rnd.Next(10);
+            for (int i = 0; i < n; i++)
+            {
+                sw.WriteLine(RandomDate().ToShortDateString());
+            }
+            sw.Close();
+        }
+        static void ReadSummerDate(string filename)
+        {
+            try
+            {
+                StreamReader sr = new StreamReader(filename);
+                while (!sr.EndOfStream)
+                {
+                    DateTime dt = DateTime.Parse(sr.ReadLine());
+                    if (dt.Month < 9 && dt.Month > 6)
+                        Console.WriteLine(dt.ToShortDateString());
+                }
+                sr.Close();
+
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Несуществующий файл");
+            }
+        }
+        static void Weekend(string filename)
+        {
+            try
+            {
+                StreamReader sr = new StreamReader(filename);
+                while (!sr.EndOfStream)
+                {
+                    DateTime dt = DateTime.Parse(sr.ReadLine());
+                    if (dt.DayOfWeek.ToString() == "Saturday" || dt.DayOfWeek.ToString() == "Sunday")
+                        Console.WriteLine(dt.ToShortDateString());
+                }
+                sr.Close();
+
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Несуществующий файл");
+            }
+        }
+        static bool Regulerize(string filename)
+        {
+            bool b = true;
+            try
+            {
+                StreamReader sr = new StreamReader(filename);
+                DateTime dt = DateTime.Parse(sr.ReadLine());
+                while (!sr.EndOfStream)
+                {
+                    DateTime ddt = DateTime.Parse(sr.ReadLine());
+                    b = (dt.CompareTo(ddt) == -1 || dt.CompareTo(ddt) == 0);
+                }
+                if (b) { Console.WriteLine("Упорядочен"); }
+                else { Console.WriteLine(" Не упорядочен"); }
+
+                sr.Close();
+              
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Несуществующий файл");
+            }
+            return b;
+        }
+        static void OldStyle(string filename)
+        {
+            try
+            {
+                StreamReader sr = new StreamReader(filename);
+                while (!sr.EndOfStream)
+                {
+                    DateTime dt = DateTime.Parse(sr.ReadLine());
+
+                        Console.WriteLine(dt.AddDays(13).ToShortDateString());
+                }
+                sr.Close();
+
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Несуществующий файл");
+            }
+        }
+
+    }
+}
