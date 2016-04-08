@@ -1,0 +1,111 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace Работа_С_Файлами
+{
+    class Program
+    {
+
+        
+        static void Main(string[] args)
+        {
+            PreLastElement("text.txt");
+            Console.ReadKey();
+            Randomnumber("text.txt");
+            ReadFile("text.txt");
+            Console.ReadKey();
+
+
+           /* StreamReader sr = new StreamReader("text.txt");               // ЧТЕНИЕ
+        string s = sr.ReadLine();
+         
+                if (s != null)
+                    Console.WriteLine(s);
+   
+                sr.Close();                                     // Закрыть файл. Обязательно
+            Console.ReadKey();
+           /* if (sr.EndOfStream)                     */           // end of file;
+           /* if (s == null)     */                            // Файл считан доконца, конец файла.
+           
+        }
+        static void MinMaxMedium(string filename, out int min, out int max, out int medium)
+        {
+            filename = filename + "text.txt";
+            min = max = medium = 0;
+            try
+            {
+                StreamReader sr = new StreamReader(filename);               // ЧТЕНИЕ
+                string s = sr.ReadLine();
+                min = max = medium = int.Parse(s);
+                while (!sr.EndOfStream)
+                {
+                    if (int.Parse(s) > max) { max = int.Parse(s); }
+                    if (int.Parse(s) < min) { min = int.Parse(s); }
+                    
+                }
+                    Console.WriteLine(sr.ReadLine());
+                sr.Close();
+            }
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Несуществующий файл");
+            }
+
+            }  // ne dodelal
+        static void PreLastElement(string filename)          //nedodel
+        {
+            filename = filename + "text.txt";
+            string second = " NOT FOUND";
+                StreamReader sr = new StreamReader(filename);
+            string first = sr.ReadLine();
+
+            while (!sr.EndOfStream)
+            {
+                second = first;
+                Console.WriteLine(sr.ReadLine());
+                first = sr.ReadLine();
+            }
+                sr.Close();
+        }
+        static Random rnd = new Random();
+        static void Randomnumber(string filename)
+        {
+            StreamWriter sw = new StreamWriter(filename);
+            int n = rnd.Next(100);
+            for (int i = 0; i < n; i++)
+            {
+                sw.WriteLine(rnd.Next(50));
+            }
+            sw.Close();
+        }
+        static void PrintFile(string filename)
+        {
+            StreamReader sr = new StreamReader(filename);               // ЧТЕНИЕ
+            string s = sr.ReadLine();
+            while (s != null)
+            {
+                Console.WriteLine(s);
+                s = sr.ReadLine();
+            }
+            sr.Close();                                  
+        }
+        static void ReadFile(string filename)
+        {
+            try
+            {
+                StreamReader sr = new StreamReader(filename);               // ЧТЕНИЕ
+                while (!sr.EndOfStream)
+                    Console.WriteLine(sr.ReadLine());
+                sr.Close();
+            } 
+            catch (FileNotFoundException)
+            {
+                Console.WriteLine("Несуществующий файл");
+            }
+        }
+    }
+}
