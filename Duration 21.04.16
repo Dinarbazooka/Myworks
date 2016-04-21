@@ -1,0 +1,153 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Duration
+{
+    class Duration
+    {
+        int days, hours, minutes, seconds, milliseconds;
+        // 1) Properties
+        public int Days
+        {
+            get { return days; }
+            protected set { days = value; }
+        }
+        public int Hours
+        {
+            get { return hours; }
+            protected set { hours = value; }
+        }
+        public int Minutes
+        {
+            get { return minutes; }
+            protected set { minutes = value; }
+        }
+        public int Seconds
+        {
+            get { return seconds; }
+            protected set { seconds = value; }
+        }
+        public int Milliseconds
+        {
+            get { return milliseconds; }
+            protected set { milliseconds = value; }
+        }
+        // 2) constructors
+        public Duration()                                                                              //constructor
+        {
+
+        }
+        public Duration(int days, int hours, int minutes, int seconds, int milliseconds)               // constructor
+        {
+            this.days = days;
+            this.hours = hours;
+            this.minutes = minutes;
+            this.seconds = seconds;
+            this.milliseconds = milliseconds;
+            Normalize();
+        }
+        public Duration(int days, int hours, int minutes)                                              // constructor
+        {
+            this.days = days;
+            this.hours = hours;
+            this.minutes = minutes;
+        }
+        // 5) transformation
+        public static Duration FromDays(double days)
+        {
+            double hours = 24 * (days % 1);
+            double minutes = 60 * (hours % 1);
+            double seconds = 60 * (minutes % 1);
+            double milliseconds = 1000 * (seconds % 1);
+            return new Duration();
+        }
+        public static Duration FromHours(double hours)
+        {
+            double minutes = 60 * (hours % 1);
+            double seconds = 60 * (minutes % 1);
+            double milliseconds = 1000 * (seconds % 1);
+            return new Duration();
+        }
+        public static Duration FromMinutes(double minutes)
+        {
+            double seconds = 60 * (minutes % 1);
+            double milliseconds = 1000 * (seconds % 1);
+            return new Duration();
+        }
+        public static Duration FromSeconds(double seconds)
+        {
+            double milliseconds = 1000 * (seconds % 1);
+            return new Duration();
+        }
+        public static Duration FromMilliseconds(double milliseconds)
+        {
+            return null;
+        }
+        public override string ToString()                               // 3)ToString 
+        {
+            return string.Format("{0}.{1:d2}.{2:d2}.{3:d2}.{4:d2}", days, hours, minutes, seconds, milliseconds);
+        }
+        static public Duration Parse(string s)                          // 4)Parse
+        {
+            string[] a = s.Split(':');
+            string[] str = a[3].Split('.');
+            return new Duration(int.Parse(a[0]), int.Parse(a[1]), int.Parse(a[2]), int.Parse(a[0]), int.Parse(a[1]));
+        }
+        public double TotalDays()
+        {
+            double mmilliseconds = seconds + milliseconds / 1000;
+            double sseconds = minutes + seconds / 60;
+            double mminutes = hours + minutes / 60;
+            double hhours = days + hours / 24;
+            double
+        }
+        public double TotalHours()
+        {
+            return seconds * 1000 + milliseconds;
+        }
+        public double TotalMinutes()
+        {
+            return minutes * 60 * 1000 + seconds * 1000 + milliseconds;
+        }
+        public double TotalSeconds()
+        {
+            return days * 24 * 60 * 60 * 1000 + hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000 + milliseconds / 1000;
+        }
+        public double TotalMilliseconds()
+        {
+            return days * 24 * 60 * 60 * 1000 + hours * 60 * 60 * 1000 + minutes * 60 * 1000 + seconds * 1000 + milliseconds;
+        }
+
+        protected void Normalize()
+        {
+            seconds += milliseconds / 1000;
+            milliseconds %= 1000;
+            minutes += seconds / 60;
+            seconds %= 60;
+            hours += minutes / 60;
+            minutes %= 60;
+            days += hours / 24;
+            hours %= 24;
+
+        }
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                TimeSpan ts = new TimeSpan(1, 40, 20);
+                // TimeSpan ts2 = TimeSpan.FromDays(0.0696);
+                Duration d = new Duration();
+                Duration d2 = Duration.FromDays(1.85);
+                Console.WriteLine(d);
+                Duration d3 = Duration.FromMinutes(10000);
+                Console.WriteLine(d3);
+                Console.ReadKey();
+                
+            }
+        }
+
+    }
+}
